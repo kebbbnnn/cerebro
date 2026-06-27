@@ -41,6 +41,7 @@ def test_chat_completion():
     
     req = make_request(url, data=data, headers=headers, method="POST")
     try:
+        start_time = time.time()
         with urllib.request.urlopen(req) as response:
             print("Response stream started:")
             for line in response:
@@ -58,9 +59,11 @@ def test_chat_completion():
                             print(delta["content"], end="", flush=True)
                     except Exception:
                         pass
-            print("\nStream finished successfully.")
+            duration = time.time() - start_time
+            print(f"\nStream finished successfully. (Time taken: {duration:.2f}s)")
     except Exception as e:
-        print(f"\nError testing chat completion: {e}")
+        duration = time.time() - start_time
+        print(f"\nError testing chat completion after {duration:.2f}s: {e}")
 
 def get_models():
     url = "http://localhost:8080/v1/models"
