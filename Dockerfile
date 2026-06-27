@@ -7,9 +7,12 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 
+# Copy source code.
+COPY cmd/ cmd/
+COPY internal/ internal/
+
 # Build the binary.
-COPY *.go ./
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o cerebro .
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o cerebro ./cmd/cerebro
 
 # Runtime stage
 FROM alpine:3.20

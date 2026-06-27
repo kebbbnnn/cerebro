@@ -37,7 +37,7 @@ tenants:
 ### 2. Run
 
 ```bash
-go build -o cerebro .
+go build -o cerebro ./cmd/cerebro
 ./cerebro
 ```
 

@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"context"
@@ -13,22 +13,9 @@ import (
 	"time"
 )
 
-func main() {
-	log.SetFlags(log.Ldate | log.Ltime | log.Lmsgprefix)
-	log.SetPrefix("[cerebro] ")
-
-	// Determine config file path.
-	configPath := os.Getenv("CEREBRO_CONFIG")
-	if configPath == "" {
-		configPath = "config.yaml"
-	}
-
-	// Load and validate configuration.
-	cfg, err := LoadConfig(configPath)
-	if err != nil {
-		log.Fatalf("Failed to load config: %v", err)
-	}
-
+// Run initializes and starts the Cerebro proxy server, blocking until
+// a SIGINT or SIGTERM is received, then shutting down gracefully.
+func Run(cfg *Config) {
 	log.Printf("Loaded %d Cerebras API key(s) and %d tenant(s)", len(cfg.CerebrasKeys), len(cfg.Tenants))
 
 	// Parse upstream URL.
