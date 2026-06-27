@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: cerebro
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: CEREBRAS_API_KEYS
+        sync: false  # Set manually as a secret in Render dashboard.
+      - key: CEREBRO_PORT
+        value: "8080"
+      - key: CEREBRO_CONFIG
+        value: "/etc/cerebro/config.yaml"

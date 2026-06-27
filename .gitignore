@@ -1,0 +1,16 @@
+# Binaries
+cerebro
+
+# Config with secrets
+config.yaml
+config.test.yaml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

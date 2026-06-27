@@ -1,0 +1,26 @@
+# Cerebro Configuration
+# Copy this file to config.yaml and fill in your values.
+
+# Cerebras API keys (can also be set via CEREBRAS_API_KEYS env var, comma-separated).
+cerebras_keys:
+  - "csk-your-first-key"
+  - "csk-your-second-key"
+  # Add more keys to increase your effective rate limit pool.
+
+# Server settings.
+server:
+  port: 8080                          # Override with CEREBRO_PORT env var.
+  upstream: "https://api.cerebras.ai" # Override with CEREBRO_UPSTREAM env var.
+
+# Default cooldown duration (in seconds) when a 429 response doesn't include
+# rate-limit reset headers.
+default_cooldown_seconds: 60
+
+# Tenants — each tenant gets a unique API key (bearer token) to authenticate
+# with Cerebro. All tenants share the same pool of Cerebras API keys.
+tenants:
+  - name: "personal"
+    api_key: "cbr-change-me-personal"
+
+  - name: "project-x"
+    api_key: "cbr-change-me-project-x"
