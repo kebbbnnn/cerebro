@@ -91,12 +91,13 @@ func TestStatsHandlerDefaultLimits(t *testing.T) {
 		t.Fatalf("failed to decode response: %v", err)
 	}
 
-	// 2 keys * 1,000,000,000 = 2,000,000,000
-	if resp.RemainingRPD != 2000000000 {
-		t.Errorf("expected default remaining_rpd to be 2000000000, got %d", resp.RemainingRPD)
+	// 2 keys * 2400 = 4800
+	if resp.RemainingRPD != 4800 {
+		t.Errorf("expected default remaining_rpd to be 4800, got %d", resp.RemainingRPD)
 	}
-	if resp.RemainingTPM != 2000000000 {
-		t.Errorf("expected default remaining_tpm to be 2000000000, got %d", resp.RemainingTPM)
+	// 2 keys * 30000 = 60000
+	if resp.RemainingTPM != 60000 {
+		t.Errorf("expected default remaining_tpm to be 60000, got %d", resp.RemainingTPM)
 	}
 	if resp.TotalRequests != 0 {
 		t.Errorf("expected default total_requests to be 0, got %d", resp.TotalRequests)

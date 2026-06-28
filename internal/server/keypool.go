@@ -62,8 +62,8 @@ func NewKeyPool(apiKeys []string, defaultCooldownSec int) *KeyPool {
 	for i, k := range apiKeys {
 		keys[i] = &KeyState{
 			APIKey:       k,
-			RemainingRPD: 1000000000,
-			RemainingTPM: 1000000000,
+			RemainingRPD: 2400,
+			RemainingTPM: 30000,
 		}
 	}
 	return &KeyPool{
