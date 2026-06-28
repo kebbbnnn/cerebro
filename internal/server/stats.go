@@ -70,6 +70,9 @@ type StatsResponse struct {
 	Keys          []KeyStatsEntry `json:"keys"`
 	Tenants       []TenantStats   `json:"tenants"`
 	UptimeSeconds float64         `json:"uptime_seconds"`
+	RemainingRPD  int64           `json:"remaining_rpd"`
+	RemainingTPM  int64           `json:"remaining_tpm"`
+	TotalRequests int64           `json:"total_requests"`
 }
 
 // StatsHandler returns an http.HandlerFunc that serves the /stats endpoint.
@@ -77,6 +80,10 @@ func StatsHandler(pool *KeyPool, collector *StatsCollector) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		keys := pool.Keys()
 		keyEntries := make([]KeyStatsEntry, len(keys))
+
+		var totalRemainingRPD int64
+		var totalRemainingTPM int64
+		var totalRequests int64
 
 		for i, k := range keys {
 			k.mu.RLock()
@@ -93,6 +100,9 @@ func StatsHandler(pool *KeyPool, collector *StatsCollector) http.HandlerFunc {
 				t := k.CooldownUntil
 				entry.CooldownUntil = &t
 			}
+			totalRemainingRPD += k.RemainingRPD
+			totalRemainingTPM += k.RemainingTPM
+			totalRequests += entry.TotalRequests
 			k.mu.RUnlock()
 			keyEntries[i] = entry
 		}
@@ -111,6 +121,9 @@ func StatsHandler(pool *KeyPool, collector *StatsCollector) http.HandlerFunc {
 			Keys:          keyEntries,
 			Tenants:       tenantEntries,
 			UptimeSeconds: time.Since(collector.startTime).Seconds(),
+			RemainingRPD:  totalRemainingRPD,
+			RemainingTPM:  totalRemainingTPM,
+			TotalRequests: totalRequests,
 		}
 
 		w.Header().Set("Content-Type", "application/json")

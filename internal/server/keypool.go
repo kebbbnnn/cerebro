@@ -60,7 +60,11 @@ type KeyPool struct {
 func NewKeyPool(apiKeys []string, defaultCooldownSec int) *KeyPool {
 	keys := make([]*KeyState, len(apiKeys))
 	for i, k := range apiKeys {
-		keys[i] = &KeyState{APIKey: k}
+		keys[i] = &KeyState{
+			APIKey:       k,
+			RemainingRPD: 1000000000,
+			RemainingTPM: 1000000000,
+		}
 	}
 	return &KeyPool{
 		keys:              keys,
